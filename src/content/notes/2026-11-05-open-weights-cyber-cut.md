@@ -5,4 +5,4 @@ source:
   url: https://thenextweb.com/news/moonshot-kimi-k3-1-pro-open-weight-cyber
 draft: false
 ---
-Open weights only keep the safeguards built into the training data. Moonshot says it removed hacking-related data before releasing Kimi K3.1 Pro, and by its own numbers the model still does well at exploiting real software flaws, so the cut lowers the capability rather than removing it. That is still more honest than refusal tuning, which a determined fine-tune can strip out. The figures are Moonshot's own, and we would like to see them tested independently now that the weights are out.
+For open weights, filtering the training data is the safeguard hardest to undo. Moonshot says it removed cyberattack material from Kimi K3.1 Pro's training. On Moonshot's own exploit benchmark the released model still solves 81% of tasks, against 90.5% for a version trained without the cut and 33.3% for K3, so filtering lowered the capability rather than removing it. Refusal tuning is weaker still: a fine-tune can strip it out. The figures are all Moonshot's and need independent testing once the weights are public.
