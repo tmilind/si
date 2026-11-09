@@ -37,6 +37,12 @@ export function assertNonEmpty(entries: Entry[]): Entry[] {
   return entries;
 }
 
+export function warnIfLongNote(id: string, body: string): void {
+  if (stripMarkdown(body).length > NOTE_WARN_LENGTH) {
+    console.warn(`[stream] note "${id}.md" is over ${NOTE_WARN_LENGTH} characters; consider making it a post.`);
+  }
+}
+
 export async function getStream(opts: { includeDrafts?: boolean; today?: Date } = {}): Promise<Entry[]> {
   const [notes, posts] = await Promise.all([getCollection('notes'), getCollection('posts')]);
 
@@ -44,9 +50,7 @@ export async function getStream(opts: { includeDrafts?: boolean; today?: Date } 
     ...notes.map((n): RawEntry => {
       const slug = slugOf(n.id);
       const body = n.body ?? '';
-      if (stripMarkdown(body).length > NOTE_WARN_LENGTH) {
-        console.warn(`[stream] note "${n.id}.md" is over ${NOTE_WARN_LENGTH} characters; consider making it a post.`);
-      }
+      warnIfLongNote(n.id, body);
       return {
         kind: 'note', slug, date: n.data.date, body, source: n.data.source,
         url: `/notes/${slug}/`, draft: n.data.draft,

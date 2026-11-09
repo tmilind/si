@@ -7,13 +7,16 @@ export function formatDate(d: Date): string {
 }
 
 export function stripMarkdown(md: string): string {
-  return md
+  // Code spans are lifted out first so their contents pass through verbatim.
+  const code: string[] = [];
+  const text = md
+    .replace(/`([^`]*)`/g, (_, c: string) => `\u0000${code.push(c) - 1}\u0000`)
     .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1')
-    .replace(/`([^`]*)`/g, '$1')
     .replace(/(\*\*|\*|__)/g, '')
     .replace(/(^|\W)_+|_+(?=\W|$)/g, '$1')
     .replace(/\s+/g, ' ')
     .trim();
+  return text.replace(/\u0000(\d+)\u0000/g, (_, i: string) => code[Number(i)]);
 }
 
 const BOUNDARY = /[.?!](?=\s)/;

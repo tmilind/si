@@ -1,5 +1,21 @@
-import { describe, it, expect } from 'vitest';
-import { filterEntries, sortEntries, assertNonEmpty, slugOf } from '../../src/lib/stream';
+import { describe, it, expect, vi, afterEach } from 'vitest';
+import { filterEntries, sortEntries, assertNonEmpty, slugOf, getStream, includeDrafts, warnIfLongNote } from '../../src/lib/stream';
+
+vi.mock('astro:content', () => ({
+  getCollection: vi.fn(async (name: string) =>
+    name === 'notes'
+      ? [
+          { id: '2026-11-01-long-one', body: 'y'.repeat(601), data: { date: new Date('2026-11-01'), draft: false } },
+          { id: '2026-11-02-short', body: 'ok', data: { date: new Date('2026-11-02'), draft: false } },
+        ]
+      : [],
+  ),
+}));
+
+afterEach(() => {
+  vi.restoreAllMocks();
+  delete process.env.SI_INCLUDE_DRAFTS;
+});
 
 const d = (s: string) => new Date(s);
 const note = (slug: string, date: string, draft = false) =>
@@ -43,5 +59,33 @@ describe('assertNonEmpty', () => {
   it('passes non-empty through', () => {
     const e = [note('a', '2026-11-01')];
     expect(assertNonEmpty(e)).toBe(e);
+  });
+});
+
+describe('long note warning', () => {
+  it('warns naming the file for notes over 600 plain chars', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    warnIfLongNote('a-note', 'y'.repeat(600));
+    expect(warn).not.toHaveBeenCalled();
+    warnIfLongNote('a-note', 'y'.repeat(601));
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(warn.mock.calls[0][0]).toContain('a-note.md');
+  });
+  it('getStream warns for the long note only', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const out = await getStream({ today: d('2026-12-01') });
+    expect(out.map((e) => e.slug)).toEqual(['short', 'long-one']);
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(warn.mock.calls[0][0]).toContain('2026-11-01-long-one.md');
+  });
+});
+
+describe('includeDrafts', () => {
+  it('reads the env var at call time', () => {
+    expect(includeDrafts()).toBe(false);
+    process.env.SI_INCLUDE_DRAFTS = '1';
+    expect(includeDrafts()).toBe(true);
+    process.env.SI_INCLUDE_DRAFTS = '0';
+    expect(includeDrafts()).toBe(false);
   });
 });
