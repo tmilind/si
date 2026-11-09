@@ -4,8 +4,9 @@ import { formatDate, headlineSplit } from '../lib/text';
 import NoteBody from './NoteBody.astro';
 interface Props { entry: Entry }
 const { entry } = Astro.props;
-// A note's headline is always its first sentence, linked to the note; the
-// remainder follows at body size. Threshold 0 forces the split for every length.
+// A note's headline is always its first sentence (plain text — a note is shown
+// in full here, so the date is its only permalink); the remainder follows at
+// body size. Threshold 0 forces the split for every length. Post titles link.
 const split = entry.kind === 'note' ? headlineSplit(entry.body, 0) : null;
 ---
 <section class="headline-block">
@@ -16,7 +17,7 @@ const split = entry.kind === 'note' ? headlineSplit(entry.body, 0) : null;
   <div class="main">
     {entry.kind === 'note' && split ? (
       <>
-        <h1 class="headline"><a class="title-link" href={entry.url}>{split.lead}</a></h1>
+        <h1 class="headline">{split.lead}</h1>
         {split.rest !== '' && <div class="lede"><NoteBody md={split.rest} /></div>}
         {entry.source && <p class="source">On <a href={entry.source.url}>{entry.source.title}</a></p>}
       </>

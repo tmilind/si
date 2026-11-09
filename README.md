@@ -34,6 +34,13 @@ draft: false
 
 Drafts (`draft: true`) are excluded from the deploy build by default. `SI_INCLUDE_DRAFTS=1 npm run dev` is the only way to preview them. To publish, set `draft: false` (or remove the field).
 
+### Content standard
+
+The stream shows a note in full, so a click must never show "the same thing again". Depth lives in posts.
+
+- A **note** reacts to something external: 2–5 sentences, and it must carry a `source` link. It says what we think about the thing linked.
+- A **post** is our own analysis: a title, a 1–2 sentence `summary` (what the stream shows), and 600+ words that go materially beyond the summary — the problem, why it matters, what we found or recommend, at least one concrete example (code, a table, a worked case). Anything that is our own thinking becomes a post, never a note.
+
 ## Deploy
 
 See [docs/deploy.md](docs/deploy.md).

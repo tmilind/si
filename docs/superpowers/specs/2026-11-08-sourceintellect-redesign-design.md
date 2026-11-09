@@ -61,6 +61,11 @@ Rules:
 - **Builder-check decision:** in the stream a post shows its title, then its summary at body size, then the reading-time line. (The wireframe in §6.1 omitted the summary; this corrects it.)
 - **Builder-check decision (amended 2026-11-08 after owner review):** the **date is the permalink** for every entry, styled as muted text with no underline until hover/focus (teal underline). **Post titles are also links** to the post, plain at rest with the same hover treatment — the owner found a non-clickable title read as a missing link. Notes have no title, so the date remains their only permalink besides the source link. Underlines appear only on hover, so the stream stays free of a column of teal.
 
+**Content standard (owner decision, 2026-11-08).** The stream shows a note in full, so a click on a note must never reveal "the same thing again"; a post is where depth lives.
+- A **note** reacts to something external: 2–5 sentences, and it **must** carry a `source` link. It says what we think about the thing linked.
+- A **post** is our own analysis: a title, a 1–2 sentence `summary` (what the stream shows), and **600+ words** that go materially beyond the summary — the problem, why it matters, what we found or recommend, with at least one concrete example (code, a table, a worked case). Anything that is our own thinking becomes a post, never a note.
+- Launch therefore carries posts for the own-research topics; a thin own-research note is not acceptable as the headline.
+
 ## 5. Site structure
 
 | Route | Content |
@@ -110,7 +115,7 @@ Home page, desktop, left-aligned, max content width ~1100px with 72px side paddi
 ```
 
 - The **newest entry is the headline**. If it's a note, its body is set at headline size; if it's a post, its title is (summary and reading-time line follow at body size). There is no slogan or hero.
-- **Builder-check decision (amended 2026-11-08 after owner review):** when the newest entry is a note, its **first sentence** is always the headline (an `<h1>` linking to the note, plain at rest, teal underline on hover) and the remainder follows at body size (17px) in the same column. The owner found an unlinked headline looked incomplete. The permalink page always shows the whole body at body size. No extra schema field; sentence split on `. ` / `? ` / `! `.
+- **Builder-check decision (amended 2026-11-08 after owner review):** when the newest entry is a note, its **first sentence** is always the headline (a plain `<h1>`, not a link — the note is shown in full here and the date is its only permalink) and the remainder follows at body size (17px) in the same column. When the newest entry is a post, the headline is its title, linked to the post. The permalink page always shows the whole body at body size. No extra schema field; sentence split on `. ` / `? ` / `! `.
 - Dates sit in a fixed-width left column. Entries are separated by 1px hairlines, nothing else. No cards, no backgrounds, no icons.
 - Only the newest entry is enlarged; everything below is uniform.
 - **Mobile (<720px):** single column; date moves above the body as a small line; side padding 20px; newest entry headline drops to ~28px.
