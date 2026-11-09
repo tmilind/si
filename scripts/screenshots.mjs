@@ -1,6 +1,7 @@
-// Serves dist/ via astro preview, captures responsive screenshots, asserts no horizontal scroll at 320.
-import { spawn } from 'node:child_process';
-import { mkdirSync } from 'node:fs';
+// Serves dist/ with a small static server, captures responsive screenshots, asserts no horizontal scroll at 320.
+import { createServer } from 'node:http';
+import { mkdirSync, readFileSync, existsSync, statSync } from 'node:fs';
+import { extname, join, normalize } from 'node:path';
 import { chromium } from 'playwright-core';
 
 const PORT = 4321;
@@ -10,20 +11,38 @@ const PAGES = { home: '/', post: '/posts/chunking-sets-the-ceiling/' };
 const WIDTHS = [320, 768, 1280];
 
 mkdirSync(OUT, { recursive: true });
-const server = spawn('npx', ['astro', 'preview', '--port', String(PORT)], { stdio: 'ignore' });
+const DIST = new URL('../dist/', import.meta.url).pathname;
+const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.xml': 'application/xml' };
+
+function resolveFile(urlPath) {
+  const p = normalize(decodeURIComponent(urlPath.split('?')[0])).replace(/^(\.\.[/\\])+/, '');
+  let f = join(DIST, p);
+  if (existsSync(f) && statSync(f).isDirectory()) f = join(f, 'index.html');
+  return existsSync(f) && statSync(f).isFile() ? f : null;
+}
+
+try {
+  await fetch(ORIGIN + '/');
+  console.error(`port ${PORT} is already answering; refusing to screenshot a stale server`);
+  process.exit(1);
+} catch {}
+
+const server = createServer((req, res) => {
+  const f = resolveFile(req.url);
+  const file = f ?? join(DIST, '404.html');
+  res.writeHead(f ? 200 : 404, { 'content-type': TYPES[extname(file)] ?? 'application/octet-stream' });
+  res.end(readFileSync(file));
+});
+await new Promise((r) => server.listen(PORT, r));
 let browser;
 let failed = false;
 try {
-  for (let i = 0; ; i++) {
-    try { if ((await fetch(ORIGIN + '/')).ok) break; } catch {}
-    if (i > 60) throw new Error('preview server did not start');
-    await new Promise((r) => setTimeout(r, 500));
-  }
   browser = await chromium.launch({ channel: 'chrome' });
   for (const [name, path] of Object.entries(PAGES)) {
     for (const w of WIDTHS) {
       const page = await browser.newPage({ viewport: { width: w, height: 800 } });
-      await page.goto(ORIGIN + path, { waitUntil: 'networkidle' });
+      const resp = await page.goto(ORIGIN + path, { waitUntil: 'networkidle' });
+      if (!resp?.ok()) throw new Error(`${ORIGIN + path} responded ${resp?.status()} (was dist built with SI_INCLUDE_DRAFTS=1?)`);
       const file = `${OUT}${name}-${w}.png`;
       await page.screenshot({ path: file, fullPage: true });
       let line = file;
@@ -41,6 +60,6 @@ try {
   failed = true;
 } finally {
   await browser?.close();
-  server.kill();
+  server.close();
 }
 process.exit(failed ? 1 : 0);

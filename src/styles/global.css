@@ -4,7 +4,8 @@
   --muted: #5C6670;
   --hairline: #E4E7EA;
   --code-bg: #F1F3F4;
-  --teal: #0D8A7A;
+  --teal: #0D8A7A; /* non-text only: mark, underlines, focus rings */
+  --teal-text: #0A7B6C; /* any teal text (AA, ~5.2:1 on white) */
   --font-sans: "IBM Plex Sans", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
@@ -26,7 +27,7 @@ a {
 }
 
 a:hover {
-  color: var(--teal);
+  color: var(--teal-text);
 }
 
 :focus-visible {
