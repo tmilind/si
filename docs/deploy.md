@@ -78,7 +78,7 @@ npm run deploy                    # npm run build && firebase deploy --only host
 
 ## Status
 
-Branch `redesign` is deploy-ready. It was not deployed by the builder, and it has not been merged to `main`.
+**Live since 2026-11-08.** Merged to `main` and deployed to Firebase Hosting at the owner's request; the `redesign` branch was deleted after the fast-forward merge. All six launch entries were published unedited (owner's call: "publish all, I'll edit live"). Still open: the Web3Forms key (`PUBLIC_WEB3FORMS_KEY` was unset at deploy, so the contact form does not deliver yet), the `www` custom domain, and pushing `main` to origin.
 
 Verified 2026-11-08 (Lighthouse 12, headless Chrome, against the drafts build served by `astro preview`):
 
