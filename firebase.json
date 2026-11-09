@@ -1,7 +1,13 @@
 {
   "hosting": {
     "site": "si-52430058-a0280",
-    "public": "website",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+    "public": "dist",
+    "cleanUrls": true,
+    "trailingSlash": true,
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "redirects": [
+      { "source": "/about.html", "destination": "/about/", "type": 301 },
+      { "source": "/contact.html", "destination": "/contact/", "type": 301 }
+    ]
   }
 }
