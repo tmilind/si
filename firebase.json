@@ -7,7 +7,8 @@
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "redirects": [
       { "source": "/about.html", "destination": "/about/", "type": 301 },
-      { "source": "/contact.html", "destination": "/contact/", "type": 301 }
+      { "source": "/contact.html", "destination": "/contact/", "type": 301 },
+      { "source": "/posts/editing-weights-directly/", "destination": "/posts/weight-space-programming/", "type": 301 }
     ]
   }
 }

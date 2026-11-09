@@ -16,4 +16,8 @@ describe('firebase.json hosting', () => {
     expect(find('/about.html')).toMatchObject({ destination: '/about/', type: 301 });
     expect(find('/contact.html')).toMatchObject({ destination: '/contact/', type: 301 });
   });
+  it('301-redirects the replaced weight-editing post', () => {
+    const r = h.redirects.find((x: { source: string }) => x.source === '/posts/editing-weights-directly/');
+    expect(r).toMatchObject({ destination: '/posts/weight-space-programming/', type: 301 });
+  });
 });
