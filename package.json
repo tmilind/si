@@ -10,6 +10,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "assets": "node scripts/build-assets.mjs",
     "test:dist": "npm run build && vitest run tests/dist",
     "deploy": "npm run build && firebase deploy --only hosting"
   },
@@ -31,6 +32,8 @@
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
+    "playwright-core": "^1.65.0",
+    "sharp": "^0.35.5",
     "typescript": "^7.0.2",
     "vitest": "^5.1.0"
   },
