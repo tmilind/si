@@ -1,6 +1,20 @@
 ---
 import Base from '../layouts/Base.astro';
+import Headline from '../components/Headline.astro';
+import StreamRow from '../components/StreamRow.astro';
+import { getStream, includeDrafts } from '../lib/stream';
+import '../styles/stream.css';
+
+const stream = await getStream({ includeDrafts: includeDrafts() });
+const rest = stream.slice(1);
 ---
 <Base title="SourceIntellect" description="SourceIntellect is a company focused on where AI is going." canonical="/">
-  <p>stream goes here</p>
+  <div class="stream-page">
+    <Headline entry={stream[0]} />
+    {rest.length > 0 && (
+      <section class="stream" aria-label="Earlier entries">
+        {rest.map((entry) => <StreamRow entry={entry} />)}
+      </section>
+    )}
+  </div>
 </Base>

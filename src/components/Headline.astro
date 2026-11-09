@@ -1,0 +1,31 @@
+---
+import type { Entry } from '../lib/stream';
+import { formatDate, headlineSplit } from '../lib/text';
+import NoteBody from './NoteBody.astro';
+interface Props { entry: Entry }
+const { entry } = Astro.props;
+const split = entry.kind === 'note' ? headlineSplit(entry.body) : null;
+---
+<section class="headline-block">
+  <div class="meta">
+    <span class="meta-label">Latest</span>
+    <a class="date" href={entry.url}>{formatDate(entry.date)}</a>
+  </div>
+  <div class="main">
+    {entry.kind === 'note' && split ? (
+      <>
+        {split.rest === ''
+          ? <div class="headline"><NoteBody md={split.lead} /></div>
+          : <p class="headline">{split.lead}</p>}
+        {split.rest !== '' && <div class="lede"><NoteBody md={split.rest} /></div>}
+        {entry.source && <p class="source">On <a href={entry.source.url}>{entry.source.title}</a></p>}
+      </>
+    ) : entry.kind === 'post' ? (
+      <>
+        <h1 class="headline"><a class="plain" href={entry.url}>{entry.title}</a></h1>
+        <p class="lede">{entry.summary}</p>
+        <p class="reading">Long read, {entry.minutes} minutes</p>
+      </>
+    ) : null}
+  </div>
+</section>
