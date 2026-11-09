@@ -59,7 +59,7 @@ Rules:
 - No categories, tags, pagination or search at launch. The home page shows the full stream. (Builder: when the stream exceeds roughly 50 entries, a yearly archive page becomes worth adding; not now.)
 - Reading time for posts is computed at build time and shown in the stream as "Long read, 12 minutes" style text, not "12 min read".
 - **Builder-check decision:** in the stream a post shows its title, then its summary at body size, then the reading-time line. (The wireframe in §6.1 omitted the summary; this corrects it.)
-- **Builder-check decision:** the **date is the permalink** for every entry. It's styled as muted text with no underline; on hover/focus it takes the teal underline. Nothing else in a row is a link except the note's source link. This keeps the stream free of a column of teal underlines.
+- **Builder-check decision (amended 2026-11-08 after owner review):** the **date is the permalink** for every entry, styled as muted text with no underline until hover/focus (teal underline). **Post titles are also links** to the post, plain at rest with the same hover treatment — the owner found a non-clickable title read as a missing link. Notes have no title, so the date remains their only permalink besides the source link. Underlines appear only on hover, so the stream stays free of a column of teal.
 
 ## 5. Site structure
 

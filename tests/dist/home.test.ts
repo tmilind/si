@@ -14,6 +14,9 @@ describe('home stream', () => {
   it.skipIf(listEntryDirs('posts').length === 0)('shows reading time for posts', () => {
     expect(html).toMatch(/Long read, \d+ minutes/);
   });
+  it.skipIf(listEntryDirs('posts').length === 0)('links post titles to the post', () => {
+    expect(html).toMatch(/<a class="title-link" href="\/posts\/[^"]+\/">/);
+  });
   it('formats dates like 07 Nov 2026', () => {
     expect(html).toMatch(/\d{2} [A-Z][a-z]{2} \d{4}/);
   });

@@ -28,6 +28,16 @@
 }
 .date:hover, .date:focus-visible { color: var(--muted); }
 
+/* Post titles link to the post: plain at rest, teal underline on hover/focus. */
+.title-link { color: inherit; text-decoration: none; }
+.title-link:hover, .title-link:focus-visible {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--teal);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
 .headline {
   margin: 0;
   max-width: 24ch;

@@ -15,7 +15,7 @@ const { entry } = Astro.props;
       </>
     ) : (
       <>
-        <h2 class="row-title">{entry.title}</h2>
+        <h2 class="row-title"><a class="title-link" href={entry.url}>{entry.title}</a></h2>
         <p class="row-summary">{entry.summary}</p>
         <p class="reading">Long read, {entry.minutes} minutes</p>
       </>
