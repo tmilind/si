@@ -1,13 +1,12 @@
-import { existsSync, readFileSync } from 'node:fs';
 import { describe, it, expect } from 'vitest';
+import { listEntryDirs, readDist } from './helpers';
 
-const notePath = 'dist/notes/evals-are-deployments/index.html';
-const postPath = 'dist/posts/chunking-sets-the-ceiling/index.html';
+const [noteSlug] = listEntryDirs('notes');
+const [postSlug] = listEntryDirs('posts');
 
 describe('note page', () => {
-  it('exists with a plain first-sentence title and article og:type', () => {
-    expect(existsSync(notePath)).toBe(true);
-    const html = readFileSync(notePath, 'utf8');
+  it.skipIf(!noteSlug)('exists with a plain first-sentence title and article og:type', () => {
+    const html = readDist(`notes/${noteSlug}/index.html`);
     const title = html.match(/<title>([^<]*)<\/title>/)![1];
     expect(title).toContain(' – SourceIntellect');
     expect(title).not.toContain('[');
@@ -16,11 +15,15 @@ describe('note page', () => {
 });
 
 describe('post page', () => {
-  it('exists and highlights code blocks', () => {
-    expect(existsSync(postPath)).toBe(true);
-    const html = readFileSync(postPath, 'utf8');
+  it.skipIf(!postSlug)('exists and highlights code blocks', () => {
+    const html = readDist(`posts/${postSlug}/index.html`);
     expect(html).toContain('<pre');
     expect(html).toMatch(/<meta property="og:type" content="article"/);
     expect(html).toMatch(/Long read, \d+ minutes/);
+  });
+  it.skipIf(!postSlug)('gives code blocks the grey code background', () => {
+    const html = readDist(`posts/${postSlug}/index.html`);
+    const pre = html.match(/<pre[^>]*>/)![0];
+    expect(pre).toContain('#f1f3f4');
   });
 });

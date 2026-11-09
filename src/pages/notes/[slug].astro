@@ -15,10 +15,11 @@ export async function getStaticPaths() {
 
 type Note = Extract<Entry, { kind: 'note' }>;
 const { entry } = Astro.props as { entry: Note };
-const title = `${noteTitle(entry.body)} – SourceIntellect`;
+const ogTitle = noteTitle(entry.body);
+const title = `${ogTitle} – SourceIntellect`;
 const description = truncateWords(stripMarkdown(entry.body), 160);
 ---
-<Base title={title} description={description} canonical={entry.url} ogType="article">
+<Base title={title} description={description} canonical={entry.url} ogTitle={ogTitle} ogType="article">
   <div class="entry-page">
     <div class="entry">
       <p class="entry-date">{formatDate(entry.date)}</p>

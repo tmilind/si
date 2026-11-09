@@ -11,11 +11,13 @@ import Footer from '../components/Footer.astro';
 interface Props {
   title: string;
   description: string;
-  canonical: string;
+  canonical?: string;
+  ogTitle?: string;
+  noindex?: boolean;
   ogType?: 'website' | 'article';
 }
-const { title, description, canonical, ogType = 'website' } = Astro.props;
-const canonicalUrl = new URL(canonical, Astro.site).href;
+const { title, description, canonical, ogTitle, noindex = false, ogType = 'website' } = Astro.props;
+const canonicalUrl = canonical ? new URL(canonical, Astro.site).href : undefined;
 const ogImage = new URL('/og.png', Astro.site).href;
 ---
 <!doctype html>
@@ -25,15 +27,16 @@ const ogImage = new URL('/og.png', Astro.site).href;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalUrl} />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={ogTitle ?? title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:type" content={ogType} />
-    <meta property="og:url" content={canonicalUrl} />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
     <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>

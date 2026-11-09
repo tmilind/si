@@ -30,6 +30,7 @@
 
 .headline {
   margin: 0;
+  max-width: 24ch;
   font-size: 40px;
   line-height: 1.12;
   letter-spacing: -0.022em;

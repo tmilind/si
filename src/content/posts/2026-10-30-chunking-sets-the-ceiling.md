@@ -4,7 +4,7 @@ date: 2026-10-30
 summary: Before embeddings, rerankers or prompts, the way you split documents decides what retrieval can find. Here is how to get it right first.
 draft: true
 ---
-<!-- DRAFT for owner review: edit freely, then set draft: false -->
+<!-- DRAFT for owner review. Edit freely, then set draft: false and delete this line. -->
 Most retrieval-augmented systems are tuned in the wrong order. Teams compare embedding models, add a reranker, rewrite the prompt, and only then look at how the documents were split. By that point the ceiling is already set. A retriever can only return chunks that exist, and if the answer to a question was cut in half on ingestion, no amount of ranking quality will put it back together.
 
 ## What a chunk has to carry

@@ -5,5 +5,5 @@ source:
   url: https://thenextweb.com/news/moonshot-kimi-k3-1-pro-open-weight-cyber
 draft: true
 ---
-<!-- DRAFT for owner review: edit freely, then set draft: false -->
+<!-- DRAFT for owner review. Edit freely, then set draft: false and delete this line. -->
 Open weights only keep the safeguards built into the training data. Moonshot says it removed hacking-related data before releasing Kimi K3.1 Pro, and by its own numbers the model still does well at exploiting real software flaws, so the cut lowers the capability rather than removing it. That is still more honest than refusal tuning, which a determined fine-tune can strip out. The figures are Moonshot's own, and we would like to see them tested independently now that the weights are out.

@@ -21,7 +21,7 @@ type Post = Extract<Entry, { kind: 'post' }>;
 const { entry, post } = Astro.props as { entry: Post; post: Awaited<ReturnType<typeof getCollection<'posts'>>>[number] };
 const { Content } = await render(post);
 ---
-<Base title={`${entry.title} – SourceIntellect`} description={entry.summary} canonical={entry.url} ogType="article">
+<Base title={`${entry.title} – SourceIntellect`} description={entry.summary} canonical={entry.url} ogTitle={entry.title} ogType="article">
   <div class="entry-page">
     <div class="entry">
       <p class="entry-date">{formatDate(entry.date)}</p>

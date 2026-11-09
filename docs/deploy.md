@@ -91,7 +91,7 @@ Verified 2026-11-08 (Lighthouse 12, headless Chrome, against the drafts build se
 
 Before deploying, the owner must:
 
-1. Edit and approve the five draft entries in `src/content/`, set `draft: false` on each, and delete the DRAFT comment line. The build fails without `SI_INCLUDE_DRAFTS=1` while drafts remain.
+1. Edit and approve the five draft entries in `src/content/`, set `draft: false` on each, and delete the DRAFT comment line (the `<!-- DRAFT for owner review ... -->` line at the top of the body). The build fails without `SI_INCLUDE_DRAFTS=1` while drafts remain.
 2. Create a Web3Forms access key and `export PUBLIC_WEB3FORMS_KEY=...` in the shell that runs the deploy.
 3. Look at the rendered mark and share image and approve them: `public/og.png` and `public/favicon-32.png` (regenerate with `npm run assets`).
 4. Add `www.sourceintellect.com` as a custom domain in the Firebase console (see "Adding www") and create the DNS records it shows at the registrar.

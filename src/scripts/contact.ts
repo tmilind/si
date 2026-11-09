@@ -16,6 +16,9 @@ form?.addEventListener('submit', async (event) => {
   event.preventDefault();
   const f = event.currentTarget as HTMLFormElement;
   const data = new FormData(f);
+  const button = f.querySelector<HTMLButtonElement>('button[type="submit"], button:not([type])');
+  const label = button?.textContent ?? '';
+  if (button) { button.disabled = true; button.textContent = 'Sending…'; }
   try {
     const response = await fetch(f.action, {
       method: 'POST',
@@ -25,12 +28,16 @@ form?.addEventListener('submit', async (event) => {
     const json = await response.json();
     if (response.ok && json.success) {
       const p = document.createElement('p');
+      p.setAttribute('role', 'status');
+      p.tabIndex = -1;
       p.textContent = `Sent. We'll reply to ${data.get('email')}.`;
       f.replaceWith(p);
+      p.focus();
       return;
     }
   } catch {
     // fall through to the failure message
   }
+  if (button) { button.disabled = false; button.textContent = label; }
   failure(f);
 });

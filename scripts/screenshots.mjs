@@ -1,17 +1,24 @@
 // Serves dist/ with a small static server, captures responsive screenshots, asserts no horizontal scroll at 320.
 import { createServer } from 'node:http';
-import { mkdirSync, readFileSync, existsSync, statSync } from 'node:fs';
+import { mkdirSync, readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { extname, join, normalize } from 'node:path';
 import { chromium } from 'playwright-core';
 
 const PORT = 4321;
 const ORIGIN = `http://localhost:${PORT}`;
 const OUT = new URL('../.playwright-mcp/verify/', import.meta.url).pathname;
-const PAGES = { home: '/', post: '/posts/chunking-sets-the-ceiling/' };
 const WIDTHS = [320, 768, 1280];
 
 mkdirSync(OUT, { recursive: true });
 const DIST = new URL('../dist/', import.meta.url).pathname;
+const postDir = existsSync(join(DIST, 'posts'))
+  ? readdirSync(join(DIST, 'posts'), { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name).sort()[0]
+  : undefined;
+if (!postDir) {
+  console.error('No post found under dist/posts/. Build with SI_INCLUDE_DRAFTS=1 (or add a published post) before running screenshots.');
+  process.exit(1);
+}
+const PAGES = { home: '/', post: `/posts/${postDir}/` };
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.xml': 'application/xml' };
 
 function resolveFile(urlPath) {

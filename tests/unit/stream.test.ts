@@ -36,6 +36,14 @@ describe('filterEntries', () => {
     const out = filterEntries([note('a', '2026-11-08'), note('b', '2026-11-09')], { includeDrafts: false, today });
     expect(out.map((e) => e.slug)).toEqual(['a']);
   });
+  it('logs the ids of skipped future-dated entries', () => {
+    const info = vi.spyOn(console, 'info').mockImplementation(() => {});
+    filterEntries([note('a', '2026-11-08'), note('b', '2026-11-09'), note('c', '2026-12-01')], { includeDrafts: false, today });
+    expect(info).toHaveBeenCalledTimes(1);
+    expect(info.mock.calls[0][0]).toContain('Skipping 2 future-dated entries');
+    expect(info.mock.calls[0][0]).toContain('b');
+    info.mockRestore();
+  });
   it('excludes drafts unless flagged', () => {
     const raw = [note('a', '2026-11-01', true), note('b', '2026-11-01')];
     expect(filterEntries(raw, { includeDrafts: false, today }).map((e) => e.slug)).toEqual(['b']);

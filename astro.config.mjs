@@ -6,5 +6,18 @@ export default defineConfig({
   trailingSlash: 'always',
   build: { format: 'directory' },
   integrations: [sitemap()],
-  markdown: { shikiConfig: { theme: 'github-light' } },
+  markdown: { shikiConfig: {
+      theme: 'github-light',
+      // Astro does not forward Shiki's colorReplacements, so swap the inline <pre> background ourselves.
+      transformers: [
+        {
+          pre(node) {
+            const style = node.properties.style;
+            if (typeof style === 'string') {
+              node.properties.style = style.replace(/background-color:\s*#(?:fff|ffffff)\b/i, 'background-color:#f1f3f4');
+            }
+          },
+        },
+      ],
+    } },
 });

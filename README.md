@@ -29,6 +29,9 @@ summary: One-sentence summary.
 draft: false
 ```
 
+- Note images must live in `public/` and be referenced with absolute paths (`/images/…`).
+- Slugs (the filename minus the date prefix) must be unique across all notes and across all posts.
+
 Drafts (`draft: true`) are excluded from the deploy build by default. `SI_INCLUDE_DRAFTS=1 npm run dev` is the only way to preview them. To publish, set `draft: false` (or remove the field).
 
 ## Deploy

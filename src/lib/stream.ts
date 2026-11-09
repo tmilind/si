@@ -21,6 +21,10 @@ export function slugOf(id: string): string {
 }
 
 export function filterEntries(entries: RawEntry[], opts: { includeDrafts: boolean; today: Date }): Entry[] {
+  const future = entries.filter((e) => e.date.getTime() > opts.today.getTime());
+  if (future.length > 0) {
+    console.info(`[stream] Skipping ${future.length} future-dated entries: ${future.map((e) => e.slug).join(', ')}`);
+  }
   return entries.filter((e) => (opts.includeDrafts || !e.draft) && e.date.getTime() <= opts.today.getTime());
 }
 
