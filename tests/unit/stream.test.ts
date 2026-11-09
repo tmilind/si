@@ -56,6 +56,12 @@ describe('assertNonEmpty', () => {
   it('throws on empty', () => {
     expect(() => assertNonEmpty([])).toThrow('No publishable entries. Add a note or post, or set SI_INCLUDE_DRAFTS=1 for preview.');
   });
+  it('throws when every entry is a draft and drafts are excluded', () => {
+    const allDraftFixtures = [note('a', '2026-11-01', true), note('b', '2026-11-03', true), post('p', '2026-10-30', true)];
+    expect(() => assertNonEmpty(filterEntries(allDraftFixtures, { includeDrafts: false, today: d('2026-11-08') }))).toThrow(
+      'No publishable entries. Add a note or post, or set SI_INCLUDE_DRAFTS=1 for preview.',
+    );
+  });
   it('passes non-empty through', () => {
     const e = [note('a', '2026-11-01')];
     expect(assertNonEmpty(e)).toBe(e);

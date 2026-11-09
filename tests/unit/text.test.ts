@@ -45,6 +45,13 @@ describe('text helpers', () => {
     expect(stripMarkdown('the `_id` field')).toBe('the _id field');
     expect(stripMarkdown('`2*3*4` is 24')).toBe('2*3*4 is 24');
   });
+  it('stripMarkdown drops HTML comments so draft markers never reach titles', () => {
+    const md = '<!-- DRAFT for owner review: edit freely, then set draft: false -->\nFirst point. Second.';
+    expect(stripMarkdown(md)).toBe('First point. Second.');
+    expect(noteTitle(md)).toBe('First point.');
+    expect(headlineSplit(md + ' ' + 'x'.repeat(230)).lead).toBe('First point.');
+    expect(stripMarkdown('Write `<!-- x -->` here')).toBe('Write <!-- x --> here');
+  });
   it('stripMarkdown handles images and nested emphasis', () => {
     expect(stripMarkdown('![alt text](a.png) after')).toBe('alt text after');
     expect(stripMarkdown('**bold _and italic_ text**')).toBe('bold and italic text');

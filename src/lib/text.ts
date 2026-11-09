@@ -6,11 +6,14 @@ export function formatDate(d: Date): string {
   return `${day} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
 }
 
+const HTML_COMMENT = /<!--[\s\S]*?-->/g;
+
 export function stripMarkdown(md: string): string {
   // Code spans are lifted out first so their contents pass through verbatim.
   const code: string[] = [];
   const text = md
     .replace(/`([^`]*)`/g, (_, c: string) => `\u0000${code.push(c) - 1}\u0000`)
+    .replace(HTML_COMMENT, '')
     .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1')
     .replace(/(\*\*|\*|__)/g, '')
     .replace(/(^|\W)_+|_+(?=\W|$)/g, '$1')
@@ -35,6 +38,7 @@ export function truncateWords(text: string, max = 70): string {
 }
 
 export function headlineSplit(md: string, threshold = 220): { lead: string; rest: string } {
+  md = md.replace(HTML_COMMENT, '').trimStart();
   if (stripMarkdown(md).length <= threshold) return { lead: md, rest: '' };
   const m = BOUNDARY.exec(md);
   if (!m) return { lead: stripMarkdown(md), rest: '' };

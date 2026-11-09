@@ -1,8 +1,8 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, it, expect } from 'vitest';
 
-const notePath = 'dist/notes/fixture-long/index.html';
-const postPath = 'dist/posts/fixture-post/index.html';
+const notePath = 'dist/notes/evals-are-deployments/index.html';
+const postPath = 'dist/posts/chunking-sets-the-ceiling/index.html';
 
 describe('note page', () => {
   it('exists with a plain first-sentence title and article og:type', () => {

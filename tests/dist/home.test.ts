@@ -17,6 +17,6 @@ describe('home stream', () => {
     expect(html).toMatch(/\d{2} [A-Z][a-z]{2} \d{4}/);
   });
   it('renders one row per non-headline entry', () => {
-    expect((html.match(/class="row"/g) ?? []).length).toBe(2);
+    expect((html.match(/class="row"/g) ?? []).length).toBe(4);
   });
 });
