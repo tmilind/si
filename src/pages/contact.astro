@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import '../styles/page.css';
+
+const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY as string | undefined;
+if (!accessKey) {
+  console.warn('PUBLIC_WEB3FORMS_KEY is not set; the contact form will not deliver.');
+}
+---
+<Base title="Contact – SourceIntellect" description="Send a message to SourceIntellect and we'll reply by email." canonical="/contact/">
+  <div class="page">
+    <p>Send a message and we'll reply by email.</p>
+    <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value={accessKey} />
+      <input type="hidden" name="subject" value="Message from sourceintellect.com" />
+      <input type="checkbox" name="botcheck" class="hp" tabindex="-1" aria-hidden="true" />
+      <label>Name <input type="text" name="name" required autocomplete="name" /></label>
+      <label>Email <input type="email" name="email" required autocomplete="email" /></label>
+      <label>Message <textarea name="message" required></textarea></label>
+      <button type="submit">Send message</button>
+    </form>
+    <p>Or write to <a href="mailto:hello@sourceintellect.com">hello@sourceintellect.com</a>.</p>
+  </div>
+  <script src="../scripts/contact.ts"></script>
+</Base>
