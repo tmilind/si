@@ -1,0 +1,7 @@
+{
+  "hosting": {
+    "site": "si-52430058-a0280",
+    "public": "website",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+  }
+}
