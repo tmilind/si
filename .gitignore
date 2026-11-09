@@ -45,3 +45,6 @@ logs/
 
 # Brainstorm mockups (visual companion)
 .superpowers/
+
+# Astro
+.astro/
