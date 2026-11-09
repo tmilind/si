@@ -2,9 +2,8 @@
 title: Editing model weights directly is becoming a normal tool
 date: 2026-11-08
 summary: Changing what a model knows or does by editing its weights, rather than retraining or prompting it, has moved from research curiosity to something teams with open-weight models can use. It works for some jobs and fails quietly for others, so treat every edit like a code change.
-draft: true
+draft: false
 ---
-<!-- DRAFT for owner review. Edit freely, then set draft: false and delete this line. -->
 For most teams, there have been two ways to change a model's behaviour: prompt it differently or fine-tune it. A third option has matured alongside them. You can change the weights directly, by targeted surgery on a few layers, by adding and subtracting the differences between fine-tuned checkpoints, or by merging several specialists into one model. None of these needs a training run in the usual sense, some run on a CPU, and the tooling is now mature enough for any team building on open-weight models. So it is worth being clear about what each method does, where it holds up, and where it fails without telling you.
 
 ## Three families of weight editing

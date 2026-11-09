@@ -2,9 +2,8 @@
 title: Tables break first in long-document retrieval
 date: 2026-11-07
 summary: When we evaluate retrieval over long documents, the first answers to go wrong are the ones that live in tables. Here is why naive chunking breaks them, how to catch it, and what to change before you touch the embedding model.
-draft: true
+draft: false
 ---
-<!-- DRAFT for owner review. Edit freely, then set draft: false and delete this line. -->
 Tables break first when we evaluate retrieval over long documents. Prose degrades gracefully under bad chunking: a paragraph cut in half still carries most of its meaning in each half. A table cut in half does not. The second half is a grid of numbers with no labels, and a model reading it will still produce an answer, fluent and confident and attached to the wrong column. That is why we now check how tables survive ingestion before we compare embedding models or rerankers. No amount of ranking quality restores a cell that has lost its label.
 
 We wrote about splitting documents along their own structure in [Chunking sets the ceiling on retrieval](/posts/chunking-sets-the-ceiling/). This post is the table-specific version: what goes wrong, how it shows up, how to measure it, and what to do about it.
