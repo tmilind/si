@@ -12,8 +12,9 @@
     "preview": "astro preview",
     "assets": "node scripts/build-assets.mjs",
     "test:dist": "SI_INCLUDE_DRAFTS=1 npm run build && vitest run tests/dist",
-    "verify": "npm run test:dist && node scripts/check-links.mjs && node scripts/screenshots.mjs",
-    "deploy": "npm run build && firebase deploy --only hosting"
+    "lint:content": "node scripts/lint-content.mjs",
+    "verify": "npm run lint:content && npm run test:dist && node scripts/check-links.mjs && node scripts/screenshots.mjs",
+    "deploy": "npm run lint:content && npm run build && firebase deploy --only hosting"
   },
   "repository": {
     "type": "git",

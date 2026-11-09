@@ -16,6 +16,8 @@ This site was prepared deploy-ready and has not been deployed by the builder; th
 
 ## Publish an entry
 
+Read [content-standard.md](content-standard.md) first; `npm run lint:content` must pass (deploy runs it and stops on failure).
+
 Add a Markdown file named `YYYY-MM-DD-slug.md` to `src/content/notes/` or `src/content/posts/`.
 
 Note (the body is the note text; `source` is optional):
@@ -55,7 +57,7 @@ SI_INCLUDE_DRAFTS=1 npm run dev
 
 ```sh
 export PUBLIC_WEB3FORMS_KEY=...   # your Web3Forms access key
-npm run deploy                    # npm run build && firebase deploy --only hosting
+npm run deploy                    # npm run lint:content && npm run build && firebase deploy --only hosting
 ```
 
 ## Post-deploy checks

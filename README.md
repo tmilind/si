@@ -36,6 +36,8 @@ Drafts (`draft: true`) are excluded from the deploy build by default. `SI_INCLUD
 
 ### Content standard
 
+The full standard and human checklist are in [docs/content-standard.md](docs/content-standard.md); `npm run lint:content` enforces the checkable parts and runs inside `npm run verify` and `npm run deploy`.
+
 The stream shows a note in full, so a click must never show "the same thing again". Depth lives in posts.
 
 - A **note** reacts to something external: 2–5 sentences, and it must carry a `source` link. It says what we think about the thing linked.
