@@ -24,8 +24,18 @@ import Wordmark from './Wordmark.astro';
   .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
   .brand:hover { color: inherit; }
   nav { display: flex; gap: 28px; font-size: 15px; }
+  nav a { text-decoration: none; }
+  nav a:hover, nav a:focus-visible, .brand:hover, .brand:focus-visible {
+    text-decoration: underline;
+    text-decoration-color: var(--teal);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+  }
   @media (max-width: 720px) {
     .masthead { padding: 0 20px; }
-    nav { gap: 20px; }
+    nav { gap: 16px; font-size: 14px; }
+  }
+  @media (max-width: 480px) {
+    .masthead { height: auto; min-height: 84px; flex-wrap: wrap; row-gap: 8px; padding-top: 16px; padding-bottom: 12px; }
   }
 </style>

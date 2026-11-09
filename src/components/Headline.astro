@@ -22,7 +22,7 @@ const split = entry.kind === 'note' ? headlineSplit(entry.body) : null;
       </>
     ) : entry.kind === 'post' ? (
       <>
-        <h1 class="headline"><a class="plain" href={entry.url}>{entry.title}</a></h1>
+        <h1 class="headline">{entry.title}</h1>
         <p class="lede">{entry.summary}</p>
         <p class="reading">Long read, {entry.minutes} minutes</p>
       </>

@@ -19,15 +19,14 @@
   color: var(--muted);
 }
 .row .date { padding-top: 5px; }
-.date, a.plain { text-decoration: none; }
-.date:hover, .date:focus-visible, a.plain:hover, a.plain:focus-visible {
+.date { text-decoration: none; }
+.date:hover, .date:focus-visible {
   text-decoration: underline;
   text-decoration-color: var(--teal);
   text-decoration-thickness: 1.5px;
   text-underline-offset: 3px;
 }
 .date:hover, .date:focus-visible { color: var(--muted); }
-a.plain { color: inherit; }
 
 .headline {
   margin: 0;
