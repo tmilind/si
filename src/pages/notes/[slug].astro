@@ -1,0 +1,31 @@
+---
+import Base from '../../layouts/Base.astro';
+import NoteBody from '../../components/NoteBody.astro';
+import { getStream, includeDrafts } from '../../lib/stream';
+import type { Entry } from '../../lib/stream';
+import { formatDate, noteTitle, stripMarkdown, truncateWords } from '../../lib/text';
+import '../../styles/entry.css';
+
+export async function getStaticPaths() {
+  const stream = await getStream({ includeDrafts: includeDrafts() });
+  return stream
+    .filter((e) => e.kind === 'note')
+    .map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+}
+
+type Note = Extract<Entry, { kind: 'note' }>;
+const { entry } = Astro.props as { entry: Note };
+const title = `${noteTitle(entry.body)} – SourceIntellect`;
+const description = truncateWords(stripMarkdown(entry.body), 160);
+---
+<Base title={title} description={description} canonical={entry.url} ogType="article">
+  <div class="entry-page">
+    <div class="entry">
+      <p class="entry-date">{formatDate(entry.date)}</p>
+      <div class="entry-main">
+        <div class="entry-note"><NoteBody md={entry.body} /></div>
+        {entry.source && <p class="entry-source">On <a href={entry.source.url}>{entry.source.title}</a></p>}
+      </div>
+    </div>
+  </div>
+</Base>

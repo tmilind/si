@@ -1,0 +1,35 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import { getStream, includeDrafts, slugOf } from '../../lib/stream';
+import type { Entry } from '../../lib/stream';
+import { formatDate } from '../../lib/text';
+import '../../styles/entry.css';
+
+export async function getStaticPaths() {
+  const stream = await getStream({ includeDrafts: includeDrafts() });
+  const posts = await getCollection('posts');
+  return stream
+    .filter((e) => e.kind === 'post')
+    .map((entry) => {
+      const post = posts.find((p) => slugOf(p.id) === entry.slug)!;
+      return { params: { slug: entry.slug }, props: { entry, post } };
+    });
+}
+
+type Post = Extract<Entry, { kind: 'post' }>;
+const { entry, post } = Astro.props as { entry: Post; post: Awaited<ReturnType<typeof getCollection<'posts'>>>[number] };
+const { Content } = await render(post);
+---
+<Base title={`${entry.title} – SourceIntellect`} description={entry.summary} canonical={entry.url} ogType="article">
+  <div class="entry-page">
+    <div class="entry">
+      <p class="entry-date">{formatDate(entry.date)}</p>
+      <div class="entry-main">
+        <p class="entry-reading">Long read, {entry.minutes} minutes</p>
+        <h1 class="entry-title">{entry.title}</h1>
+        <article class="entry-article"><Content /></article>
+      </div>
+    </div>
+  </div>
+</Base>
