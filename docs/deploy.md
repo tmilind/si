@@ -2,6 +2,8 @@
 
 The site is a static Astro build in `dist/`, served by Firebase Hosting.
 
+This site was prepared deploy-ready and has not been deployed by the builder; the owner runs the deploy.
+
 - Firebase project and Hosting site ID: `si-52430058-a0280`
 - Default URL: https://si-52430058-a0280.web.app
 - `sourceintellect.com` (apex) already serves from this site.
@@ -16,9 +18,30 @@ The site is a static Astro build in `dist/`, served by Firebase Hosting.
 
 Add a Markdown file named `YYYY-MM-DD-slug.md` to `src/content/notes/` or `src/content/posts/`.
 
-- Notes: frontmatter as in existing notes (date, short body, optional links).
-- Posts: frontmatter as in existing posts (title, date, description).
-- `draft: true` keeps an entry out of the build. The build fails by design when there are no publishable entries.
+Note (the body is the note text; `source` is optional):
+
+```yaml
+---
+date: 2026-11-07
+source:
+  title: Title of the thing you're reacting to
+  url: https://example.com/article
+draft: false
+---
+```
+
+Post:
+
+```yaml
+---
+title: Post title
+date: 2026-11-07
+summary: One-sentence summary.
+draft: false
+---
+```
+
+Drafts (`draft: true`) are excluded from the deploy build by default. `SI_INCLUDE_DRAFTS=1 npm run dev` is the only way to preview them. To publish, set `draft: false` (or remove the field). The build fails by design when there are no publishable entries.
 
 Preview, including drafts, locally:
 
@@ -37,7 +60,7 @@ npm run deploy                    # npm run build && firebase deploy --only host
 
 ## Post-deploy checks
 
-- `/about.html` and `/contact.html` return 301 to `/about/` and `/contact/`.
+- `/about.html` and `/contact.html` return 301 to `/about/` and `/contact/`. Example: `curl -sI https://sourceintellect.com/about.html` should show 301 and `location: /about/`.
 - `https://sourceintellect.com` and https://si-52430058-a0280.web.app both serve the new site.
 - `https://www.sourceintellect.com` redirects to the apex (after "Adding www" below).
 - Share preview (OG image, title, description) is right for `/`, one note and one post.
@@ -54,5 +77,7 @@ npm run deploy                    # npm run build && firebase deploy --only host
 5. Wait for verification and certificate provisioning, then run the www post-deploy check.
 
 ## Status
+
+This site was prepared deploy-ready and has not been deployed by the builder; the owner runs the deploy.
 
 <!-- Task 10 fills this in. -->

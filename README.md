@@ -14,11 +14,22 @@ The contact form posts to Web3Forms and needs `PUBLIC_WEB3FORMS_KEY`. Get a key 
 
 ## Publishing
 
-Add a Markdown file named `YYYY-MM-DD-slug.md` for a note or a post (follow the frontmatter of the existing entries). Set `draft: true` to keep it out of the build. Preview drafts locally with:
+Add `YYYY-MM-DD-slug.md` to `src/content/notes/` or `src/content/posts/` with this frontmatter:
 
-```sh
-SI_INCLUDE_DRAFTS=1 npm run dev
+```yaml
+# note (source is optional)
+date: 2026-11-07
+source: { title: Thing you're reacting to, url: https://example.com/article }
+draft: false
+
+# post
+title: Post title
+date: 2026-11-07
+summary: One-sentence summary.
+draft: false
 ```
+
+Drafts (`draft: true`) are excluded from the deploy build by default. `SI_INCLUDE_DRAFTS=1 npm run dev` is the only way to preview them. To publish, set `draft: false` (or remove the field).
 
 ## Deploy
 
