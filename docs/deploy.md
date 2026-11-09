@@ -78,6 +78,21 @@ npm run deploy                    # npm run build && firebase deploy --only host
 
 ## Status
 
-This site was prepared deploy-ready and has not been deployed by the builder; the owner runs the deploy.
+Branch `redesign` is deploy-ready. It was not deployed by the builder, and it has not been merged to `main`.
 
-<!-- Task 10 fills this in. -->
+Verified 2026-11-08 (Lighthouse 12, headless Chrome, against the drafts build served by `astro preview`):
+
+| Page | Performance | Accessibility | Best practices | SEO |
+| --- | --- | --- | --- | --- |
+| `/` | 1.00 | 1.00 | 1.00 | 1.00 |
+| `/posts/chunking-sets-the-ceiling/` | 1.00 | 1.00 | 1.00 | 1.00 |
+
+`npm run verify` passes (dist tests, link check, no horizontal scroll at 320px).
+
+Before deploying, the owner must:
+
+1. Edit and approve the five draft entries in `src/content/`, set `draft: false` on each, and delete the DRAFT comment line. The build fails without `SI_INCLUDE_DRAFTS=1` while drafts remain.
+2. Create a Web3Forms access key and `export PUBLIC_WEB3FORMS_KEY=...` in the shell that runs the deploy.
+3. Look at the rendered mark and share image and approve them: `public/og.png` and `public/favicon-32.png` (regenerate with `npm run assets`).
+4. Add `www.sourceintellect.com` as a custom domain in the Firebase console (see "Adding www") and create the DNS records it shows at the registrar.
+5. Merge to `main`, run `npm run deploy`, then work through "Post-deploy checks" above.
