@@ -48,3 +48,6 @@ logs/
 
 # Astro
 .astro/
+
+# Firebase local cache
+.firebase/
