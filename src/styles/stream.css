@@ -46,7 +46,6 @@
   letter-spacing: -0.022em;
   font-weight: 500;
 }
-.headline .note-body p { margin: 0; }
 .headline-block .lede { margin: 24px 0 0; font-size: 17px; line-height: 1.5; max-width: 64ch; }
 .headline-block .lede p { margin: 0 0 0.8em; }
 .headline-block .source { margin: 16px 0 0; font-size: 15px; color: var(--muted); }

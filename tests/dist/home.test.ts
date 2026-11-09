@@ -14,6 +14,9 @@ describe('home stream', () => {
   it.skipIf(listEntryDirs('posts').length === 0)('shows reading time for posts', () => {
     expect(html).toMatch(/Long read, \d+ minutes/);
   });
+  it('links the headline to its entry', () => {
+    expect(html).toMatch(/<h1 class="headline"><a class="title-link" href="\/(notes|posts)\/[^"]+\/">/);
+  });
   it.skipIf(listEntryDirs('posts').length === 0)('links post titles to the post', () => {
     expect(html).toMatch(/<a class="title-link" href="\/posts\/[^"]+\/">/);
   });
