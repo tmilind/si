@@ -1,4 +1,4 @@
-.entry-page { padding: 24px 0 96px; }
+.entry-page { padding: 24px 0 32px; }
 .entry { display: grid; grid-template-columns: 160px minmax(0, 1fr); padding: 24px 0 0; }
 
 .entry-date, .entry-reading {
@@ -9,18 +9,21 @@
 .entry-date { font-size: 12.5px; padding-top: 5px; }
 .entry-reading { font-size: 13.5px; margin-bottom: 12px; padding-top: 5px; }
 
-.entry-note { max-width: 64ch; font-size: 17px; line-height: 1.5; }
+.entry-note { max-width: var(--measure); font-size: 17px; line-height: 1.5; }
+.entry-lead { margin: 0 0 0.5em; font-size: inherit; line-height: inherit; font-weight: 500; letter-spacing: 0; text-wrap: balance; }
 .entry-source { margin: 16px 0 0; font-size: 13.5px; color: var(--muted); }
+.entry-source a { padding-block: 6px; }
 
 .entry-title {
   margin: 0 0 32px;
+  max-width: 24ch;
   font-size: 40px;
   line-height: 1.12;
   letter-spacing: -0.022em;
   font-weight: 500;
 }
 
-.entry-article { max-width: 64ch; font-size: 17px; line-height: 1.6; }
+.entry-article { max-width: var(--measure); font-size: 17px; line-height: 1.6; }
 .entry-article > :first-child { margin-top: 0; }
 .entry-article p { margin: 0 0 1.1em; }
 .entry-article h2, .entry-article h3 { line-height: 1.25; font-weight: 500; margin: 1.8em 0 0.6em; }
@@ -43,12 +46,51 @@
   font-size: 14px;
   line-height: 1.5;
 }
+/* Scroll cue: shadows sit on the box edges and are covered by patches that travel
+   with the content, so a shadow shows only on a side that has more code to scroll to.
+   Shiki sets background-color inline; these layers only use background-image. */
+.entry-article pre {
+  background-image:
+    linear-gradient(to right, var(--code-bg), var(--code-bg)),
+    linear-gradient(to right, var(--code-bg), var(--code-bg)),
+    linear-gradient(to right, rgba(21, 25, 29, 0.14), rgba(21, 25, 29, 0)),
+    linear-gradient(to left, rgba(21, 25, 29, 0.14), rgba(21, 25, 29, 0));
+  background-position: left center, right center, left center, right center;
+  background-repeat: no-repeat;
+  background-size: 20px 100%, 20px 100%, 14px 100%, 14px 100%;
+  background-attachment: local, local, scroll, scroll;
+}
 .entry-article pre code { padding: 0; background: none; font-size: inherit; border-radius: 0; }
 
+/* Tables scroll inside their own box on narrow screens instead of the page. */
+.entry-article table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 0.4em 0 1.5em;
+  font-size: 15px;
+  line-height: 1.45;
+}
+.entry-article th, .entry-article td {
+  text-align: left;
+  vertical-align: top;
+  padding: 10px 24px 10px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.entry-article th:last-child, .entry-article td:last-child { padding-right: 0; }
+.entry-article th {
+  font-weight: 500;
+  border-bottom-color: var(--ink);
+  white-space: nowrap;
+}
+.entry-article td:first-child { white-space: nowrap; font-weight: 500; }
+
 @media (max-width: 720px) {
-  .entry-page { padding: 12px 0 64px; }
+  .entry-page { padding: 12px 0 24px; }
   .entry { grid-template-columns: minmax(0, 1fr); padding-top: 16px; }
   .entry-date { padding-top: 0; margin-bottom: 8px; }
   .entry-reading { padding-top: 0; }
   .entry-title { font-size: 28px; margin-bottom: 24px; }
+  .entry-article pre { font-size: 13px; padding: 12px 14px; }
 }

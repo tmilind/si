@@ -1,0 +1,46 @@
+---
+import type { Entry } from '../lib/stream';
+import { getStream, includeDrafts } from '../lib/stream';
+import { noteTitle } from '../lib/text';
+interface Props { entry: Entry }
+const { entry } = Astro.props;
+// The stream is newest first, so the entry before this one is newer.
+const stream = await getStream({ includeDrafts: includeDrafts() });
+const i = stream.findIndex((e) => e.url === entry.url);
+const newer = i > 0 ? stream[i - 1] : undefined;
+const older = i >= 0 && i < stream.length - 1 ? stream[i + 1] : undefined;
+const label = (e: Entry) => (e.kind === 'post' ? e.title : noteTitle(e.body));
+const rows = [
+  newer && { kind: 'Newer', entry: newer },
+  older && { kind: 'Older', entry: older },
+].filter(Boolean) as { kind: string; entry: Entry }[];
+---
+<nav class="entry-nav" aria-label="More from SourceIntellect">
+  {rows.map((r) => (
+    <div class="entry-nav-row">
+      <span class="entry-nav-label">{r.kind}</span>
+      <a href={r.entry.url}>{label(r.entry)}</a>
+    </div>
+  ))}
+  <div class="entry-nav-row">
+    <span class="entry-nav-label" aria-hidden="true"></span>
+    <a href="/">Back to the stream</a>
+  </div>
+</nav>
+<style>
+  .entry-nav { margin-top: 56px; }
+  .entry-nav-row {
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr);
+    padding: 16px 0;
+    border-top: 1px solid var(--hairline);
+    align-items: baseline;
+  }
+  .entry-nav-label { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); }
+  .entry-nav-row a { max-width: var(--measure); }
+  @media (max-width: 720px) {
+    .entry-nav { margin-top: 40px; }
+    .entry-nav-row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+    .entry-nav-label:empty { display: none; }
+  }
+</style>

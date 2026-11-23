@@ -1,4 +1,21 @@
-.page { padding: 48px 0 96px 160px; box-sizing: border-box; max-width: calc(64ch + 160px); font-size: 17px; line-height: 1.5; }
+.page {
+  display: grid;
+  grid-template-columns: 160px minmax(0, var(--measure));
+  padding: 48px 0 96px;
+  font-size: 17px;
+  line-height: 1.5;
+}
+/* The page name sits in the date column, set like the dates. */
+.page-label {
+  margin: 0;
+  padding-top: 5px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.page-body > :first-child { margin-top: 0; }
 .page p { margin: 0 0 1.1em; }
 
 .contact-form { display: grid; gap: 20px; margin: 28px 0 32px; }
@@ -11,12 +28,19 @@
   font-weight: 400;
   color: var(--ink);
   background: #fff;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--field-border);
   border-radius: 4px;
   padding: 10px 12px;
   width: 100%;
   box-sizing: border-box;
+  transition: border-color 120ms;
 }
+.contact-form input[type='text']:hover,
+.contact-form input[type='email']:hover,
+.contact-form textarea:hover { border-color: var(--ink); }
+.contact-form input[type='text']:focus-visible,
+.contact-form input[type='email']:focus-visible,
+.contact-form textarea:focus-visible { border-color: var(--teal); outline-offset: 1px; }
 .contact-form textarea { min-height: 160px; resize: vertical; line-height: 1.5; }
 .contact-form button {
   justify-self: start;
@@ -28,10 +52,16 @@
   border: 0;
   border-radius: 5px;
   padding: 10px 16px;
+  min-height: 44px;
   cursor: pointer;
+  transition: background-color 120ms;
 }
+.contact-form button:hover { background: #2C343B; }
+.contact-form button:active { background: #000; }
+.contact-form button:disabled { background: var(--muted); cursor: progress; }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 
 @media (max-width: 720px) {
-  .page { padding: 24px 0 64px; max-width: 64ch; }
+  .page { grid-template-columns: minmax(0, 1fr); padding: 24px 0 64px; max-width: var(--measure); }
+  .page-label { padding-top: 0; margin-bottom: 8px; }
 }

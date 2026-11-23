@@ -40,12 +40,14 @@ const ogImage = new URL('/og.png', Astro.site).href;
     <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
     <Masthead />
-    <main><slot /></main>
+    <main id="main" tabindex="-1"><slot /></main>
     <Footer />
   </body>
 </html>
 <style is:global>
+  main:focus { outline: none; }
   main { box-sizing: border-box; max-width: 1100px; margin: 0 auto; padding: 0 72px; }
   @media (max-width: 720px) { main { padding: 0 20px; } }
 </style>

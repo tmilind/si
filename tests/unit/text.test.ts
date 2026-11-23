@@ -2,7 +2,7 @@ process.env.TZ = 'America/Los_Angeles';
 import { describe, it, expect } from 'vitest';
 import {
   formatDate, stripMarkdown, firstSentence, truncateWords,
-  headlineSplit, readingTime, noteTitle,
+  headlineSplit, readingTime, noteTitle, splitLead,
 } from '../../src/lib/text';
 
 describe('text helpers', () => {
@@ -71,5 +71,11 @@ describe('text helpers', () => {
   });
   it('truncateWords handles a first word longer than max', () => {
     expect(truncateWords('supercalifragilistic word', 5)).toBe('super…');
+  });
+  it('splitLead keeps the first sentence as Markdown', () => {
+    expect(splitLead('See [the post](https://x.y). Then more. And more.')).toEqual({
+      lead: 'See [the post](https://x.y).', rest: 'Then more. And more.',
+    });
+    expect(splitLead('One sentence only')).toEqual({ lead: 'One sentence only', rest: '' });
   });
 });

@@ -1,16 +1,23 @@
 ---
 import type { Entry } from '../lib/stream';
-import { formatDate } from '../lib/text';
+import { formatDate, splitLead } from '../lib/text';
+import { marked } from 'marked';
 import NoteBody from './NoteBody.astro';
 interface Props { entry: Entry }
 const { entry } = Astro.props;
+// A note's first sentence is its take: set it at weight 500 (same size) so the stream can be scanned.
+const note = entry.kind === 'note' ? splitLead(entry.body) : null;
+const leadHtml = note ? (marked.parseInline(note.lead, { async: false }) as string) : '';
 ---
 <article class="row">
   <a class="date" href={entry.url}>{formatDate(entry.date)}</a>
   <div class="main">
     {entry.kind === 'note' ? (
       <>
-        <div class="row-body"><NoteBody md={entry.body} /></div>
+        <div class="row-body">
+          <p class="row-lead" set:html={leadHtml} />
+          {note && note.rest !== '' && <NoteBody md={note.rest} />}
+        </div>
         {entry.source && <p class="source">On <a href={entry.source.url}>{entry.source.title}</a></p>}
       </>
     ) : (

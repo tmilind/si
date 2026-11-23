@@ -1,9 +1,11 @@
 ---
 import Base from '../../layouts/Base.astro';
+import EntryNav from '../../components/EntryNav.astro';
 import NoteBody from '../../components/NoteBody.astro';
 import { getStream, includeDrafts } from '../../lib/stream';
 import type { Entry } from '../../lib/stream';
-import { formatDate, noteTitle, stripMarkdown, truncateWords } from '../../lib/text';
+import { formatDate, noteTitle, splitLead, stripMarkdown, truncateWords } from '../../lib/text';
+import { marked } from 'marked';
 import '../../styles/entry.css';
 
 export async function getStaticPaths() {
@@ -18,15 +20,22 @@ const { entry } = Astro.props as { entry: Note };
 const ogTitle = noteTitle(entry.body);
 const title = `${ogTitle} – SourceIntellect`;
 const description = truncateWords(stripMarkdown(entry.body), 160);
+// The first sentence is the page's h1, set at body size so the note still reads as one paragraph.
+const { lead, rest } = splitLead(entry.body);
+const leadHtml = marked.parseInline(lead, { async: false }) as string;
 ---
 <Base title={title} description={description} canonical={entry.url} ogTitle={ogTitle} ogType="article">
   <div class="entry-page">
     <div class="entry">
       <p class="entry-date">{formatDate(entry.date)}</p>
       <div class="entry-main">
-        <div class="entry-note"><NoteBody md={entry.body} /></div>
+        <div class="entry-note">
+          <h1 class="entry-lead" set:html={leadHtml} />
+          {rest !== '' && <NoteBody md={rest} />}
+        </div>
         {entry.source && <p class="entry-source">On <a href={entry.source.url}>{entry.source.title}</a></p>}
       </div>
     </div>
+    <EntryNav entry={entry} />
   </div>
 </Base>

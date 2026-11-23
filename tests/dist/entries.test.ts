@@ -26,4 +26,8 @@ describe('post page', () => {
     const pre = html.match(/<pre[^>]*>/)![0];
     expect(pre).toContain('#f1f3f4');
   });
+  it.skipIf(!postSlug)('never uses the keyword red that fails contrast on the code background', () => {
+    const html = readDist(`posts/${postSlug}/index.html`);
+    expect(html.toLowerCase()).not.toContain('#d73a49');
+  });
 });

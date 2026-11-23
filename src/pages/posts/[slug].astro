@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import EntryNav from '../../components/EntryNav.astro';
 import { getCollection, render } from 'astro:content';
 import { getStream, includeDrafts, slugOf } from '../../lib/stream';
 import type { Entry } from '../../lib/stream';
@@ -31,5 +32,6 @@ const { Content } = await render(post);
         <article class="entry-article"><Content /></article>
       </div>
     </div>
+    <EntryNav entry={entry} />
   </div>
 </Base>

@@ -20,4 +20,9 @@ describe('firebase.json hosting', () => {
     const r = h.redirects.find((x: { source: string }) => x.source === '/posts/editing-weights-directly/');
     expect(r).toMatchObject({ destination: '/posts/weight-space-programming/', type: 301 });
   });
+  it('sends the entry parent paths (no index pages) to the stream', () => {
+    const find = (s: string) => h.redirects.find((r: { source: string }) => r.source === s);
+    expect(find('/posts/')).toMatchObject({ destination: '/', type: 302 });
+    expect(find('/notes/')).toMatchObject({ destination: '/', type: 302 });
+  });
 });

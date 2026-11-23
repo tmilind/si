@@ -24,6 +24,8 @@ form?.addEventListener('submit', async (event) => {
       method: 'POST',
       body: data,
       headers: { Accept: 'application/json' },
+      // Without a timeout a stalled request would leave "Sending…" up forever.
+      signal: AbortSignal.timeout(15000),
     });
     const json = await response.json();
     if (response.ok && json.success) {

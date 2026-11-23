@@ -46,6 +46,15 @@ export function headlineSplit(md: string, threshold = 220): { lead: string; rest
   return { lead: stripMarkdown(md.slice(0, end)), rest: md.slice(end).trimStart() };
 }
 
+/** Splits Markdown at its first sentence boundary, keeping the lead as Markdown (for inline rendering). */
+export function splitLead(md: string): { lead: string; rest: string } {
+  md = md.replace(HTML_COMMENT, '').trim();
+  const m = BOUNDARY.exec(md);
+  if (!m) return { lead: md, rest: '' };
+  const end = m.index + 1;
+  return { lead: md.slice(0, end), rest: md.slice(end).trimStart() };
+}
+
 export function readingTime(text: string, wpm = 220): number {
   const words = text.trim().split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.ceil(words / wpm));
